@@ -15,12 +15,12 @@ A Java implementation of a FAT-style virtual disk system supporting:
 
 ## Storage Layout Diagram
 
-| Header (16B)    | FAT         | Directory   | Data Blocks |
-|-----------------|-------------|-------------|-------------|
-| blockSize (4B)  | FAT entries | Filename    | Block 0     |
-| fatEntries (4B) | (262k×4B)   | Start Block | (0-4KB)     |
-| maxFiles (4B)   |             | File Size   | Block 1     |
-| reserved (4B)   |             | ...         | (4-8KB)     |
+| Header (16B)    | FAT         | Directory                                           | Data Blocks      |
+|-----------------|-------------|-----------------------------------------------------|------------------|
+| blockSize (4B)  | FAT entries | Filename1 (24B) + Start Block (4B) + File Size (4B) | Block 0  (0-4KB) |
+| fatEntries (4B) | (262k×4B)   | Filename2 (24B) + Start Block (4B) + File Size (4B) | Block 1  (4-8KB) |
+| maxFiles (4B)   | ...         | ...                                                 | ...              |
+| reserved (4B)   | ...         | ...                                                 | ...              |
 
 ### 1. Format Header Section (16 bytes)
 
@@ -44,11 +44,11 @@ A Java implementation of a FAT-style virtual disk system supporting:
 
 - **65,536 entries** × 32 bytes each:
 
-| Filename (24B)      | Start Block | File Size |
-|---------------------|-------------|-----------|
-| report.txt          | 0           | 8192      |
-| [0xE5]... (deleted) | —           | —         |
-| image.jpg           | 2           | 12288     |
+| Filename (24B)      | Start Block (4B) | File Size (4B) |
+|---------------------|------------------|----------------|
+| report.txt          | 0                | 8192           |
+| [0xE5]... (deleted) | —                | —              |
+| image.jpg           | 2                | 12288          |
 
 ### 4. Data Blocks
 
